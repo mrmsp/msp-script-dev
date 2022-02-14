@@ -25,11 +25,11 @@ Function main {
 
 Function uninstall-mcafee-windows {
     # Remove the Store apps from McAfee
-    $RemoveApp = 'Mcafee'
+    $RemoveApp = 'mcafee'
     Write-Host "Running Powershell McAfee uninstalls"
-    Get-apppackage -AllUsers -Name *McAfee* 
-    Get-apppackage -AllUsers -Name *McAfee* | Remove-AppPackage
-    Get-apppackage -Name *McAfee* | Remove-AppPackage
+    Get-apppackage -AllUsers -Name "*$($RemoveApp)*" 
+    Get-apppackage -AllUsers -Name "*$($RemoveApp)*" | Remove-AppPackage
+    Get-apppackage -Name "*$($RemoveApp)*" | Remove-AppPackage
 
     Get-AppxPackage -AllUsers | Where-Object {$_.Name -Match $RemoveApp} | Remove-AppxPackage
     Get-AppxPackage | Where-Object {$_.Name -Match $RemoveApp} | Remove-AppxPackage
