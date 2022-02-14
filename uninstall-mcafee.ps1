@@ -96,4 +96,8 @@ Function verify-kabuto-patch-manager-choco {
     }
 }
 
+Function reference-notes {
+    # https://service.mcafee.com/?articleId=TS101331&page=shell&shell=article-view
+}
+
 main
