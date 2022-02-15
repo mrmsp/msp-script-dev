@@ -1,5 +1,5 @@
 ## Reboot mode script. Shows available operating systems, reboot in safe mode with syncro, reboot back to normal, enable F8 startup key, disabled F8 startup key
-## Create Syncro variable dropdown with these values: list (default), reboot_safe_networking, reboot_normal, enable_f8, disable_f8
+## Create Syncro variable $boot_mode of type dropdown with these values: list (default), reboot_safe_networking, reboot_normal, enable_f8, disable_f8
 Import-Module $env:SyncroModule
 
 switch -Exact ($boot_mode)
