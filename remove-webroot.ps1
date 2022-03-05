@@ -2,6 +2,36 @@
 # Run the script once, reboot, then run again
 # Source https://gist.github.com/mark05e/708123de4c095ffb4f735c131d8cc783
 
+#The definitive guide to removing Webroot
+#Safe Mode run WRSA --uninstall  #"C:\Program File (x86)\Webroot\wrsa.exe -uninstall"
+#
+#Reboot in Safe mode unless on WIFI
+#Run the script
+#Run the removal tool
+#Use WBEMTEST to remove the security center entries https://support.cloudradial.com/hc/en-us/articles/360049084271-Removing-Old-Antivirus-Listings-from-Security-Center
+#Open a command window as an administrator
+#Run the command: 
+#WMIC /Node:localhost /Namespace:\\root\SecurityCenter2 Path AntiVirusProduct get * /value
+#Run the Windows Management Instrumentation Tester command: 
+#WBEMTEST 
+#Click the "Connect..." button
+#Enter:
+#root/securitycenter2
+#Click the "Connect" button
+#Click the "Query..." button
+#Enter: 
+#SELECT * from Antivirusproduct
+#Select the antivirus to delete
+#Click the "Delete" button
+#Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct | Where-Object {$_.displayName -like "Webroot*"}
+#Reapply policy
+#Wait 4 min
+#Refresh the Syncro webpage Bitdefender should be installed
+#Delete the alert
+## Webroot native tools:
+#Invoke-WebRequest -URI 'http://download.webroot.com/WRUpgradeTool.exe' -UseBasicParsing -OutFile .\WRUpgradeTool.exe
+#Invoke-WebRequest -URI 'http://download.webroot.com/CleanWDF.exe' -UseBasicParsing -OutFile .\CleanWDF.exe
+
 # Webroot SecureAnywhere registry keys
 $RegKeys = @(
     "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\WRUNINST",
@@ -192,5 +222,5 @@ ForEach ($avproduct in $avproducts) {
 
 }
 
-# Show Registered AntiVirus products
+# Show Registered AntiVirus products - Webroot should not be in this list. Use these GUIDs in WBEMTEST
 Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct
