@@ -1,5 +1,6 @@
 # Removes Webroot SecureAnywhere by force
 # Run the script once, reboot, then run again
+# Source https://gist.github.com/mark05e/708123de4c095ffb4f735c131d8cc783
 
 # Webroot SecureAnywhere registry keys
 $RegKeys = @(
@@ -50,35 +51,146 @@ $Folders = @(
     "%ProgramData%\Microsoft\Windows\Start Menu\Programs\Webroot SecureAnywhere"
 )
 
+# Webroot SecureAnywhere services
+$Services = @(
+    "WRSVC",
+    "WRCoreService",
+    "WRSkyClient"
+)
+
+Write-Host "Webroot SecureAnywhere removal script running"
+$verbose = $true
+
+# Check for SAFE MODE with NETWORKING as most of this script will require SAFE MODE
+$BootState = gwmi win32_computersystem | select BootupState | Select-Object { $_.BootupState }
+Write-Host $BootState.BootupState
+if ($BootState.BootupState -eq "Normal boot") { 
+    Write "WARNING - Normal boot mode detected. This script requires SAFE MODE with Networking to remove Webroot Services." 
+    # Try to Uninstall via msi
+    cd c:\windows\temp
+    Invoke-WebRequest -URI 'https://anywhere.webrootcloudav.com/zerol/wsasme.msi' -UseBasicParsing -OutFile .\wsasme.msi
+    msiexec /i wsasme.msi GUILIC=***REMOVED*** CMDLINE=SME, quiet /qn /l*v wsasme-install.log
+    Start-Sleep 60
+    msiexec /x wsasme.msi /qn /L*v wsasme-uninstall.log
+    
+}
+if ($BootState.BootupState -eq "Fail-safe boot" -or $BootState.BootupState -eq "Fail-safe with network boot") { 
+    Write "SAFE MODE detected. This script requires SAFE MODE with Networking to remove Webroot Services." 
+}
+
+# Do a cursory check to see if webroot is installed and running. Be verbose if it looks like it's running. Also recommend -uninstall first
+
 # Try to Uninstall - https://community.webroot.com/webroot-secureanywhere-antivirus-12/pc-uninstallation-option-missing-from-control-panel-34688
-Start-Process -FilePath "${Env:ProgramFiles(x86)}\Webroot\WRSA.exe" -ArgumentList "-uninstall" -Wait -ErrorAction SilentlyContinue
-Start-Process -FilePath "${Env:ProgramFiles}\Webroot\WRSA.exe" -ArgumentList "-uninstall" -Wait -ErrorAction SilentlyContinue
+#Start-Process -FilePath "${Env:ProgramFiles(x86)}\Webroot\WRSA.exe" -ArgumentList "-uninstall" -Wait -ErrorAction SilentlyContinue
+#Start-Process -FilePath "${Env:ProgramFiles}\Webroot\WRSA.exe" -ArgumentList "-uninstall" -Wait -ErrorAction SilentlyContinue
 
-# Stop & Delete Webroot SecureAnywhere service
-sc.exe stop WRSVC
-sc.exe stop WRCoreService
-sc.exe stop WRSkyClient
-sc.exe delete WRSVC
-sc.exe delete WRCoreService
-sc.exe delete WRSkyClient
+Write-Host "List Packages"
+Get-WmiObject -Class Win32_Product | Where-Object { $_.Name -eq "Webroot SecureAnywhere" }
+Get-Package -Provider Programs -IncludeWindowsInstaller -Name "Webroot SecureAnywhere"
+Write-Host "Attempt Uninstall"
+Uninstall-Package -Name 'Webroot SecureAnywhere' -Force
 
+# Disable, Stop & Delete Webroot SecureAnywhere service
+Write-Host " Looking for Services..."
+ForEach ($Service in $Services) {
+    $WebrootService = Get-Service -Name $Service -ErrorAction SilentlyContinue
+    if ($WebrootService.Count -gt 0) {
+        Write-Host "  Removing Service: $Service"
+        Set-Service -Name $service -StartupType Disabled -Verbose -ErrorAction SilentlyContinue
+        sc config $Service start=disabled
+        Stop-Service -Name $service -Force -Verbose -ErrorAction SilentlyContinue
+        sc.exe stop $Service
+        Remove-Service -Name $service -Verbose -ErrorAction SilentlyContinue
+        sc.exe delete $Service
+        $WebrootServiceVerify = Get-Service -Name $Service -ErrorAction SilentlyContinue
+        if ($WebrootServiceVerify.Count -gt 0) {
+            Write-Host "  Failure. Service: $($Service) still exists."
+        }
+        else {
+            Write-Host "  Success. Service: $($Service) removed."
+        }
+    }
+}
 # Stop Webroot SecureAnywhere process
-Stop-Process -Name "WRSA" -Force
+Stop-Process -Name "WRSA" -Force -Verbose -ErrorAction SilentlyContinue
 
 # Remove Webroot SecureAnywhere registry keys
+Write-Host " Looking for registry keys..."
 ForEach ($RegKey in $RegKeys) {
-    Write-Host "Removing $RegKey"
-    Remove-Item -Path $RegKey -Force -Recurse -ErrorAction SilentlyContinue
+    if ($verbose) { Write-Host "  Looking for Registry key $RegKey" }
+    $RegItemCheck = Get-ItemProperty -Path $RegKey -ErrorAction SilentlyContinue
+    if ($RegItemCheck.Count -gt 0) {
+        Write-Host "  Removing $RegKey"
+        Remove-Item -Path $RegKey -Force -Recurse -Verbose -ErrorAction SilentlyContinue
+        # Verify removal
+        $RegItemVerify = Get-ItemProperty -Path $RegKey -ErrorAction SilentlyContinue
+        if ($RegItemVerify.Count -gt 0) {
+            Write-Host "  Failure. Reg Key Item $($RegKey) still exists."
+        }
+        else {
+            Write-Host "  Success. Reg Key Item $($RegKey) removed."
+        }
+    }
 }
 
 # Remove Webroot SecureAnywhere registry startup items
+Write-Host " Looking for Registry Startup Items..."
 ForEach ($RegStartupPath in $RegStartupPaths) {
-    Write-Host "Removing WRSVC from $RegStartupPath"
-    Remove-ItemProperty -Path $RegStartupPath -Name "WRSVC"
+    if ($verbose) { Write-Host "  Looking for WRSVC in $RegStartupPath" }
+    $RegPathCheck = Get-ItemProperty -Path $RegStartupPath -Name "WRSVC" -Verbose -ErrorAction SilentlyContinue
+    if ($RegPathCheck.Count -gt 0) {
+        Write-Host "  Removing WRSVC from $RegStartupPath"
+        Remove-ItemProperty -Path $RegStartupPath -Name "WRSVC" -Verbose -ErrorAction SilentlyContinue
+        # Verify removal
+        $RegPathVerify = Get-ItemProperty -Path $RegStartupPath -Name "WRSVC" -Verbose -ErrorAction SilentlyContinue
+        if ($RegPathVerify.Count -gt 0) {
+            Write-Host "  Failure. Reg Key Item WRSVC in: $($RegStartupPath) still exists."
+        }
+        else {
+            Write-Host "  Success. Reg Key Item WRSVC in: $($RegStartupPath) removed."
+        }
+    }
 }
 
 # Remove Webroot SecureAnywhere folders
-ForEach ($Folder in $Folders) {
-    Write-Host "Removing $Folder"
-    Remove-Item -Path "$Folder" -Force -Recurse -ErrorAction SilentlyContinue
+Write-Host " Looking for file folders..."
+
+## TOTO Finish cleaning up this loop
+#${Env:ProgramFiles(x86)}
+#$env:ProgramData
+#"%ProgramData%\WRData",
+#"%ProgramData%\WRCore",
+#"%ProgramFiles%\Webroot",
+#"%ProgramFiles(x86)%\Webroot",
+#"%ProgramData%\Microsoft\Windows\Start Menu\Programs\Webroot SecureAnywhere"
+
+#ForEach ($Folder in $Folders) {
+#    Write-Host "  Removing $Folder"
+#    Remove-Item -Path "$Folder" -Force -Verbose -Recurse -ErrorAction SilentlyContinue
+#}
+
+Remove-Item -Path "$env:ProgramData\WRData\" -Force -Verbose -Recurse -ErrorAction SilentlyContinue
+Remove-Item -Path "$env:ProgramData\WRCore\" -Force -Verbose -Recurse -ErrorAction SilentlyContinue
+Remove-Item -Path "$Env:Programfiles\Webroot\" -Force -Verbose -Recurse -ErrorAction SilentlyContinue
+Remove-Item -Path "${Env:Programfiles(x86)}\Webroot\" -Force -Verbose -Recurse -ErrorAction SilentlyContinue
+
+
+## Display installed AV products
+$avproducts = Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct | Where-Object { $_.displayName -like "Webroot*" }
+Write-Host " Looking for AV in Security Center registry keys..."
+ForEach ($avproduct in $avproducts) {
+    Remove-Item -Path "HKLM:\SOFTWARE\Microsoft\Security Center\Provider\Av\$($avproduct.instanceGuid)" -Force -Recurse -ErrorAction SilentlyContinue
+
+    $AVProductVerify = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Security Center\Provider\Av\$($avproduct.instanceGuid)" -ErrorAction SilentlyContinue
+    if ($AVProductVerify.Count -gt 0) {
+        Write-Host "  Failure Reg Key: $($avproduct.instanceGuid) still exists."
+    }
+    else {
+        Write-Host "  Success Reg Key: $($avproduct.instanceGuid) removed."
+    }
+
+
 }
+
+# Show Registered AntiVirus products
+Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct
