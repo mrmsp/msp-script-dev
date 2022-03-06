@@ -1,5 +1,6 @@
 ## Reboot mode script. Shows available operating systems, reboot in safe mode with syncro, reboot back to normal, enable F8 startup key, disabled F8 startup key
 ## Safe mode contains a 15 min return to normal mode automatically script. Returning to normal mode by running the script again also works.
+## Note you must login for the timer to begin. If you can't login, once a client logs in, it will start the reboot timer and clean itself up. You might not be able to login, but at least the next client login will get it back to normal.
 ## If the client PC is connected via WIFI the script will cancel itself as WIFI will not automatically connect in Safe Mode.
 ## Create Syncro variable dropdown with these values: list (default), reboot_safe_networking, reboot_normal, enable_f8, disable_f8
 Import-Module $env:SyncroModule
