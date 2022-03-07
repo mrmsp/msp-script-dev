@@ -1,5 +1,9 @@
-🖨 Printers - Clear Queue
-powershell “Stop-Service spooler -Force; $files = Get-ChildItem -Path $env:SystemRoot\System32\spool\PRINTERS -Force; $files | Remove-Item -Force; Start-Service spooler; [System.Reflection.Assembly]::LoadWithPartialName(‘System.Windows.Forms’);  [System.Windows.Forms.Messagebox]::Show(‘Print queue cleared!’)"
+
+🖨 Printers - Clear Errored Jobs
+powershell "$printers = Get-printer; foreach ($printer in $printers.Name) { Get-PrintJob -ComputerName $($env:computername) -PrinterName $printer | Where JobStatus -like "Error*" | Remove-Printjob }; [System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms');  [System.Windows.Forms.Messagebox]::Show('Print Jobs in Error cleared.')"
+
+🖨 Printers - Restart Spooler delete all jobs
+powershell "Stop-Service spooler -Force; $files = Get-ChildItem -Path $env:SystemRoot\System32\spool\PRINTERS -Force; $files | Remove-Item -Force; Start-Service spooler; [System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms');  [System.Windows.Forms.Messagebox]::Show('Print spooler restarted.')"
 
 🖨 Printers - Control Panel
 control printers
