@@ -31,6 +31,8 @@
 ## Webroot native tools:
 #Invoke-WebRequest -URI 'http://download.webroot.com/WRUpgradeTool.exe' -UseBasicParsing -OutFile .\WRUpgradeTool.exe
 #Invoke-WebRequest -URI 'http://download.webroot.com/CleanWDF.exe' -UseBasicParsing -OutFile .\CleanWDF.exe
+#https://yagmoth555.wordpress.com/2016/10/20/remove-any-trace-of-an-antivirus-was-installed-wmi/
+
 
 # Webroot SecureAnywhere registry keys
 $RegKeys = @(
@@ -63,7 +65,12 @@ $RegKeys = @(
     "HKLM:\SYSTEM\CurrentControlSet\services\WRBoot",
     "HKLM:\SYSTEM\CurrentControlSet\services\WRCore",
     "HKLM:\SYSTEM\CurrentControlSet\services\WRCoreService",
-    "HKLM:\SYSTEM\CurrentControlSet\services\wrUrlFlt"
+    "HKLM:\SYSTEM\CurrentControlSet\services\wrUrlFlt",
+    "HKLM:\SOFTWARE\Classes\Installer\Products\FCEB3C89F5DD2D44E83F849A34256374",
+    "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Products\FCEB3C89F5DD2D44E83F849A34256374",
+    "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{98C3BECF-DD5F-44D2-8EF3-48A943523647}",
+    "HKLM:\SOFTWARE\Classes\CLSID\{C9C42510-9B41-42c1-9DCD-7282A2D07C61}",
+    "HKLM:\SOFTWARE\Classes\WOW6432Node\CLSID\{C9C42510-9B41-42c1-9DCD-7282A2D07C61}"
 )
 
 # Webroot SecureAnywhere startup registry item paths
@@ -74,11 +81,11 @@ $RegStartupPaths = @(
 
 # Webroot SecureAnywhere folders
 $Folders = @(
-    "%ProgramData%\WRData",
-    "%ProgramData%\WRCore",
-    "%ProgramFiles%\Webroot",
-    "%ProgramFiles(x86)%\Webroot",
-    "%ProgramData%\Microsoft\Windows\Start Menu\Programs\Webroot SecureAnywhere"
+    "$Env:ProgramData\WRData",
+    "$Env:ProgramData\WRCore",
+    "$Env:Programfiles\Webroot",
+    "$Env:Programfiles(x86)\Webroot",
+    "$Env:ProgramData\Microsoft\Windows\Start Menu\Programs\Webroot SecureAnywhere"
 )
 
 # Webroot SecureAnywhere services
@@ -184,26 +191,10 @@ ForEach ($RegStartupPath in $RegStartupPaths) {
 
 # Remove Webroot SecureAnywhere folders
 Write-Host " Looking for file folders..."
-
-## TOTO Finish cleaning up this loop
-#${Env:ProgramFiles(x86)}
-#$env:ProgramData
-#"%ProgramData%\WRData",
-#"%ProgramData%\WRCore",
-#"%ProgramFiles%\Webroot",
-#"%ProgramFiles(x86)%\Webroot",
-#"%ProgramData%\Microsoft\Windows\Start Menu\Programs\Webroot SecureAnywhere"
-
-#ForEach ($Folder in $Folders) {
-#    Write-Host "  Removing $Folder"
-#    Remove-Item -Path "$Folder" -Force -Verbose -Recurse -ErrorAction SilentlyContinue
-#}
-
-Remove-Item -Path "$env:ProgramData\WRData\" -Force -Verbose -Recurse -ErrorAction SilentlyContinue
-Remove-Item -Path "$env:ProgramData\WRCore\" -Force -Verbose -Recurse -ErrorAction SilentlyContinue
-Remove-Item -Path "$Env:Programfiles\Webroot\" -Force -Verbose -Recurse -ErrorAction SilentlyContinue
-Remove-Item -Path "${Env:Programfiles(x86)}\Webroot\" -Force -Verbose -Recurse -ErrorAction SilentlyContinue
-
+ForEach ($Folder in $Folders) {
+    Write-Host "  Removing $Folder"
+    Remove-Item -Path "$Folder" -Force -Verbose -Recurse -ErrorAction SilentlyContinue
+}
 
 ## Display installed AV products
 $avproducts = Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct | Where-Object { $_.displayName -like "Webroot*" }
@@ -213,7 +204,7 @@ ForEach ($avproduct in $avproducts) {
 
     $AVProductVerify = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Security Center\Provider\Av\$($avproduct.instanceGuid)" -ErrorAction SilentlyContinue
     if ($AVProductVerify.Count -gt 0) {
-        Write-Host "  Failure Reg Key: $($avproduct.instanceGuid) still exists."
+        Write-Host "  Failure Reg Key: $($avproduct.instanceGuid) still exists. Reboot and run this script again. If this still exists, then proceed to the WBEMTEST manual procedure."
     }
     else {
         Write-Host "  Success Reg Key: $($avproduct.instanceGuid) removed."
@@ -221,6 +212,3 @@ ForEach ($avproduct in $avproducts) {
 
 
 }
-
-# Show Registered AntiVirus products - Webroot should not be in this list. Use these GUIDs in WBEMTEST
-Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct
