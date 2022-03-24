@@ -4,9 +4,9 @@ Webroot Uninstall Guide
 Goal
 ----
 
-To remove enough remnants of webroot for other anti-virus software to install. In Syncro Bitdefender will not install if there are certain remnants of Webroot still installed. Checking the Security Center is the best way to determin if Webroot is blocking the install. Run this Powershell to see a list of registered anti-virus software: `Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct`.
+To remove enough remnants of webroot for other anti-virus software to install another AV. In Syncro, Bitdefender will not install if there are certain remnants of Webroot still installed. Checking the Security Center is the best way to determine if Webroot is blocking the install. Run this Powershell to see a list of registered anti-virus software: `Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct`.
 
-The Security Center is not the only thing that will block an install. If you ran something that has made an impact on the uninstall, run the test and see if it has helped.
+The Security Center is not the only thing that will block an install. Some registry keys (citation neede) and still showing as an installed program still seem to have an effect. If you ran something in this guide that has made an impact on the uninstall, stop and run the test again to see if it has helped.
 
 Testing
 -------
