@@ -19,7 +19,7 @@ Procedure
 Remove from old RMM
 -------------------
 
-*   Deactivate Webroot from the old RMM / Webroot control panel first. I can't stress this enough to start. There is a script that you can force the polling to webroot to get those commands to uninstall quickly.
+*   Deactivate Webroot from the old RMM / Webroot control panel first. I can't stress this enough to start. There is a script that you can force the polling to webroot to get those commands to uninstall quickly. (link needed)
 *   Run the "Webroot Poll" script for a day or a week for offline machines if needed first.
 
 Best Removal Method
@@ -73,7 +73,7 @@ The safe mode script enables Syncro in safe mode and works well on ethernet conn
 
 ### Run WBEMTEST
 
-*   Run this Powershell to get a list of GUIDs to remove. Do not delete any other GUID found in the next step.  
+*   Run this Powershell to get a list of GUIDs to remove. Warning: Do not delete any other GUID. Only delete those as listed in the next step.  
     `Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct | Where-Object {$_.displayName -like "Webroot*"}`
 *   Run the Windows Management Instrumentation Tester command: `WBEMTEST.EXE`
 *   Click the "Connect..." button. Enter: `root/securitycenter2`
