@@ -58,7 +58,7 @@ The safe mode script enables Syncro in safe mode and works well on ethernet conn
 
 ### Uninstall from wrsa.exe
 
-*   Look in `Program Files (x86)\Webroot` and `Program Files\Webroot` for the `WRSA.EXE` file to attempt an uninstall. If you still have the `WRSA.EXE` file this is your best bet BEFORE running any scripts as they are rarely very effective.
+*   Look in `Program Files (x86)\Webroot` and `Program Files\Webroot` for the `WRSA.EXE` file to attempt an uninstall. If you still have the `WRSA.EXE` file this is your best bet BEFORE running any scripts as they are rarely very effective. Run `wrsa.exe -uninstall` from the Run command or a prompt. 
 
 ### Run the script
 
