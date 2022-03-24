@@ -7,7 +7,10 @@ Do not rely on these scripts staying here. Once finished they will be moved to a
 - install-syncro-intune.ps1 - Micrsoft Intune Endpoint Syncro install script template with failover URL support
 - ip-scanner.ps1 - LAN IP scanner. TODO add Syncro network pull to make it run without input
 - monitor-domain-expiration.ps1 - TODO Needs complete rewrite and pull domains from Syncro for automation
-- remove-webroot.ps1 - Safe Mode webroot removal script. Use with wbemtest for final step. TODO cleanup and write the definitive guide doc
+- remove-webroot.ps1 - Safe Mode webroot removal script. Use with wbemtest for final step. TODO cleanup script.
+- remove-webroot.md - Aims to be the definitive guide to removing Webroot.
+- remove-webroot-polling.cmd - A script to run agressively (every 15 min) while you are decommissioning Webroot. It forces Webroot to check in with the cloud more often to initiate an uninstall. 
+- remove-webroot-polling-reboot.cmd - An even more agressive polling script as it adds a reboot. Run every 15 min during a maintenance window and let it reboot as much as needed.
 - safe-mode-f8-reboot.ps1 - Safe mode reboot script. Automatically reverts to normal mode after 15 minutes in case you cannot connect. Includes the ability to enable F8 start in safe mode like Windows 7.
 - tray-one-line-scripts.ps1 - One liner scripts to add to Syncro tray icon.
 - uninstall-mcafee.ps1 - Downloads the mcafee uninstaller directly and runs it. TODO working but needs cleaned up.
