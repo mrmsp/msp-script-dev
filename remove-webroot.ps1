@@ -36,56 +36,80 @@
 
 # Webroot SecureAnywhere registry keys
 $RegKeys = @(
-    "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\WRUNINST",
-    "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\WRUNINST",
-    "HKLM:\SOFTWARE\WOW6432Node\WRData",
-    "HKLM:\SOFTWARE\WOW6432Node\WRCore",
-    "HKLM:\SOFTWARE\WOW6432Node\WRMIDData",
-    "HKLM:\SOFTWARE\WOW6432Node\webroot",
-    "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WRUNINST",
-    "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\WRUNINST",
-    "HKLM:\SOFTWARE\WRData",
-    "HKLM:\SOFTWARE\WRMIDData",
-    "HKLM:\SOFTWARE\WRCore",
-    "HKLM:\SOFTWARE\webroot",
-    "HKLM:\SYSTEM\ControlSet001\services\WRSVC",
-    "HKLM:\SYSTEM\ControlSet001\services\WRkrn",
-    "HKLM:\SYSTEM\ControlSet001\services\WRBoot",
-    "HKLM:\SYSTEM\ControlSet001\services\WRCore",
-    "HKLM:\SYSTEM\ControlSet001\services\WRCoreService",
-    "HKLM:\SYSTEM\ControlSet001\services\wrUrlFlt",
-    "HKLM:\SYSTEM\ControlSet002\services\WRSVC",
-    "HKLM:\SYSTEM\ControlSet002\services\WRkrn",
-    "HKLM:\SYSTEM\ControlSet002\services\WRBoot",
-    "HKLM:\SYSTEM\ControlSet002\services\WRCore",
-    "HKLM:\SYSTEM\ControlSet002\services\WRCoreService",
-    "HKLM:\SYSTEM\ControlSet002\services\wrUrlFlt",
-    "HKLM:\SYSTEM\CurrentControlSet\services\WRSVC",
-    "HKLM:\SYSTEM\CurrentControlSet\services\WRkrn",
-    "HKLM:\SYSTEM\CurrentControlSet\services\WRBoot",
-    "HKLM:\SYSTEM\CurrentControlSet\services\WRCore",
-    "HKLM:\SYSTEM\CurrentControlSet\services\WRCoreService",
-    "HKLM:\SYSTEM\CurrentControlSet\services\wrUrlFlt",
-    "HKLM:\SOFTWARE\Classes\Installer\Products\FCEB3C89F5DD2D44E83F849A34256374",
-    "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Products\FCEB3C89F5DD2D44E83F849A34256374",
-    "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{98C3BECF-DD5F-44D2-8EF3-48A943523647}",
-    "HKLM:\SOFTWARE\Classes\CLSID\{C9C42510-9B41-42c1-9DCD-7282A2D07C61}",
-    "HKLM:\SOFTWARE\Classes\WOW6432Node\CLSID\{C9C42510-9B41-42c1-9DCD-7282A2D07C61}"
+    "HKLM:SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\WRUNINST",
+    "HKLM:SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\WRUNINST",
+    "HKLM:SOFTWARE\WOW6432Node\WRData",
+    "HKLM:SOFTWARE\WOW6432Node\WRCore",
+    "HKLM:SOFTWARE\WOW6432Node\WRMIDData",
+    "HKLM:SOFTWARE\WOW6432Node\webroot",
+    "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\WRUNINST",
+    "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\WRUNINST",
+    "HKLM:SOFTWARE\WRData",
+    "HKLM:SOFTWARE\WRMIDData",
+    "HKLM:SOFTWARE\WRCore",
+    "HKLM:SOFTWARE\webroot",
+    "HKLM:SYSTEM\ControlSet001\services\WRSVC",
+    "HKLM:SYSTEM\ControlSet001\services\WRkrn",
+    "HKLM:SYSTEM\ControlSet001\services\WRBoot",
+    "HKLM:SYSTEM\ControlSet001\services\WRCore",
+    "HKLM:SYSTEM\ControlSet001\services\WRCoreService",
+    "HKLM:SYSTEM\ControlSet001\services\wrUrlFlt",
+    "HKLM:SYSTEM\ControlSet002\services\WRSVC",
+    "HKLM:SYSTEM\ControlSet002\services\WRkrn",
+    "HKLM:SYSTEM\ControlSet002\services\WRBoot",
+    "HKLM:SYSTEM\ControlSet002\services\WRCore",
+    "HKLM:SYSTEM\ControlSet002\services\WRCoreService",
+    "HKLM:SYSTEM\ControlSet002\services\wrUrlFlt",
+    "HKLM:SYSTEM\CurrentControlSet\services\WRSVC",
+    "HKLM:SYSTEM\CurrentControlSet\services\WRkrn",
+    "HKLM:SYSTEM\CurrentControlSet\services\WRBoot",
+    "HKLM:SYSTEM\CurrentControlSet\services\WRCore",
+    "HKLM:SYSTEM\CurrentControlSet\services\WRCoreService",
+    "HKLM:SYSTEM\CurrentControlSet\services\wrUrlFlt",
+    "HKLM:SOFTWARE\Classes\Installer\Products\FCEB3C89F5DD2D44E83F849A34256374",
+    "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Products\FCEB3C89F5DD2D44E83F849A34256374",
+    "HKLM:SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{98C3BECF-DD5F-44D2-8EF3-48A943523647}",
+    "HKLM:SOFTWARE\Classes\CLSID\{C9C42510-9B41-42c1-9DCD-7282A2D07C61}",
+    "HKLM:SOFTWARE\Classes\WOW6432Node\CLSID\{C9C42510-9B41-42c1-9DCD-7282A2D07C61}",
+    "HKLM:SOFTWARE\Microsoft\Security Center\Provider\Av\{A16A5B28-D1C0-417E-771B-123558EECC69}",
+    "HKLM:SOFTWARE\Microsoft\Security Center\Provider\Av\{DF901FA1-F926-253B-C464-B01C79DCAD48}",
+    "HKLM:SOFTWARE\Microsoft\Security Center\Provider\Av\{EA22F846-E33A-0128-9418-185509C86920}",
+    "HKLM:SOFTWARE\Classes\CLSID\{372F007B-46C6-4FA7-BF5A-A5A515164585}",
+    "HKLM:SOFTWARE\Classes\CLSID\{C9C42510-9B41-42c1-9DCD-7282A2D07C61}",
+    "HKLM:SOFTWARE\Classes\CLSID\{D0E5315B-468B-4B43-AE00-9E06F51B3E92}",
+    "HKLM:SOFTWARE\Classes\Installer\Products\7759DC84F449C6948BEA6F5120042C1D",
+    "HKLM:SOFTWARE\Classes\Installer\Products\FCEB3C89F5DD2D44E83F849A34256374",
+    "HKLM:SOFTWARE\Classes\TypeLib\{0ABE5B6E-ED71-45E8-AD07-13CC1514704A}",
+    "HKLM:SOFTWARE\Classes\TypeLib\{62B57247-87F4-4DCA-B84C-34D881F494B9}",
+    "HKLM:SOFTWARE\Microsoft\Security Center\Provider\Av\{A16A5B28-D1C0-417E-771B-123558EECC69}",
+    "HKLM:SOFTWARE\Microsoft\Security Center\Provider\Av\{DF901FA1-F926-253B-C464-B01C79DCAD48}",
+    "HKLM:SOFTWARE\Microsoft\Security Center\Provider\Av\{EA22F846-E33A-0128-9418-185509C86920}",
+    "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\3B703AB9D5E7A8584E00BCCECAACF6C2",
+    "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\5ECBA4FC669E16687A565654B23ACB45",
+    "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\64F3F8C2263CD8362FD91DB969551BB2",
+    "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\B75921370BFB461568C780C2A54E7660",
+    "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\C40E539E32DAA55B29E53A5BE07A6C88",
+    "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\D9557974A685057FDEF759519F8EB6B6",
+    "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Products\7759DC84F449C6948BEA6F5120042C1D",
+    "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Products\FCEB3C89F5DD2D44E83F849A34256374",
+    "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{48CD9577-944F-496C-B8AE-F6150240C2D1}"
+
+
 )
 
 # Webroot SecureAnywhere startup registry item paths
 $RegStartupPaths = @(
-    "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Run",
-    "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+    "HKLM:SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Run",
+    "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
 )
 
 # Webroot SecureAnywhere folders
 $Folders = @(
-    "$Env:ProgramData\WRData",
-    "$Env:ProgramData\WRCore",
-    "$Env:Programfiles\Webroot",
-    "$Env:Programfiles(x86)\Webroot",
-    "$Env:ProgramData\Microsoft\Windows\Start Menu\Programs\Webroot SecureAnywhere"
+    "$env:ProgramData\WRData",
+    "$env:ProgramData\WRCore",
+    "$env:Programfiles\Webroot",
+    "$env:Programfiles(x86)\Webroot",
+    "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Webroot SecureAnywhere"
 )
 
 # Webroot SecureAnywhere services
@@ -106,8 +130,8 @@ if ($BootState.BootupState -eq "Normal boot") {
     # Try to Uninstall via msi
     cd c:\windows\temp
     Invoke-WebRequest -URI 'https://anywhere.webrootcloudav.com/zerol/wsasme.msi' -UseBasicParsing -OutFile .\wsasme.msi
-    msiexec /i wsasme.msi GUILIC=***REMOVED*** CMDLINE=SME, quiet /qn /l*v wsasme-install.log
-    Start-Sleep 60
+    #msiexec /i wsasme.msi GUILIC=***REMOVED*** CMDLINE=SME, quiet /qn /l*v wsasme-install.log
+    #Start-Sleep 60
     msiexec /x wsasme.msi /qn /L*v wsasme-uninstall.log
     
 }
@@ -122,25 +146,26 @@ if ($BootState.BootupState -eq "Fail-safe boot" -or $BootState.BootupState -eq "
 #Start-Process -FilePath "${Env:ProgramFiles}\Webroot\WRSA.exe" -ArgumentList "-uninstall" -Wait -ErrorAction SilentlyContinue
 
 Write-Host "List Packages"
-Get-WmiObject -Class Win32_Product | Where-Object { $_.Name -eq "Webroot SecureAnywhere" }
-Get-Package -Provider Programs -IncludeWindowsInstaller -Name "Webroot SecureAnywhere"
+Get-WmiObject -Class Win32_Product | Where-Object { $_.Name -eq "Webroot SecureAnywhere" } | Out-Null
+Get-Package -Provider Programs -IncludeWindowsInstaller -Name "Webroot SecureAnywhere" | Out-Null
 Write-Host "Attempt Uninstall"
-Uninstall-Package -Name 'Webroot SecureAnywhere' -Force
+Uninstall-Package -Name 'Webroot SecureAnywhere' -Force -ErrorAction SilentlyContinue | Out-Null
 
 # Disable, Stop & Delete Webroot SecureAnywhere service
 Write-Host " Looking for Services..."
 ForEach ($Service in $Services) {
     $WebrootService = Get-Service -Name $Service -ErrorAction SilentlyContinue
-    if ($WebrootService.Count -gt 0) {
+    if (!$WebrootService) {
         Write-Host "  Removing Service: $Service"
         Set-Service -Name $service -StartupType Disabled -Verbose -ErrorAction SilentlyContinue
-        sc config $Service start=disabled
+        #sc.exe config $Service start=disabled
         Stop-Service -Name $service -Force -Verbose -ErrorAction SilentlyContinue
-        sc.exe stop $Service
-        Remove-Service -Name $service -Verbose -ErrorAction SilentlyContinue
+        #sc.exe stop $Service
+        # Remove-Service requires Powershell v6.0
+        #Remove-Service -Name $service -Verbose -ErrorAction SilentlyContinue
         sc.exe delete $Service
         $WebrootServiceVerify = Get-Service -Name $Service -ErrorAction SilentlyContinue
-        if ($WebrootServiceVerify.Count -gt 0) {
+        if (!$WebrootServiceVerify) {
             Write-Host "  Failure. Service: $($Service) still exists."
         }
         else {
@@ -156,12 +181,12 @@ Write-Host " Looking for registry keys..."
 ForEach ($RegKey in $RegKeys) {
     if ($verbose) { Write-Host "  Looking for Registry key $RegKey" }
     $RegItemCheck = Get-ItemProperty -Path $RegKey -ErrorAction SilentlyContinue
-    if ($RegItemCheck.Count -gt 0) {
+    if (!$RegItemCheck) {
         Write-Host "  Removing $RegKey"
         Remove-Item -Path $RegKey -Force -Recurse -Verbose -ErrorAction SilentlyContinue
         # Verify removal
         $RegItemVerify = Get-ItemProperty -Path $RegKey -ErrorAction SilentlyContinue
-        if ($RegItemVerify.Count -gt 0) {
+        if (!$RegItemVerify) {
             Write-Host "  Failure. Reg Key Item $($RegKey) still exists."
         }
         else {
@@ -175,12 +200,12 @@ Write-Host " Looking for Registry Startup Items..."
 ForEach ($RegStartupPath in $RegStartupPaths) {
     if ($verbose) { Write-Host "  Looking for WRSVC in $RegStartupPath" }
     $RegPathCheck = Get-ItemProperty -Path $RegStartupPath -Name "WRSVC" -Verbose -ErrorAction SilentlyContinue
-    if ($RegPathCheck.Count -gt 0) {
+    if (!$RegPathCheck) {
         Write-Host "  Removing WRSVC from $RegStartupPath"
         Remove-ItemProperty -Path $RegStartupPath -Name "WRSVC" -Verbose -ErrorAction SilentlyContinue
         # Verify removal
         $RegPathVerify = Get-ItemProperty -Path $RegStartupPath -Name "WRSVC" -Verbose -ErrorAction SilentlyContinue
-        if ($RegPathVerify.Count -gt 0) {
+        if (!$RegPathVerify) {
             Write-Host "  Failure. Reg Key Item WRSVC in: $($RegStartupPath) still exists."
         }
         else {
@@ -200,10 +225,10 @@ ForEach ($Folder in $Folders) {
 $avproducts = Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct | Where-Object { $_.displayName -like "Webroot*" }
 Write-Host " Looking for AV in Security Center registry keys..."
 ForEach ($avproduct in $avproducts) {
-    Remove-Item -Path "HKLM:\SOFTWARE\Microsoft\Security Center\Provider\Av\$($avproduct.instanceGuid)" -Force -Recurse -ErrorAction SilentlyContinue
+    Remove-Item -Path "HKLM:SOFTWARE\Microsoft\Security Center\Provider\Av\$($avproduct.instanceGuid)" -Force -Recurse -ErrorAction SilentlyContinue
 
-    $AVProductVerify = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Security Center\Provider\Av\$($avproduct.instanceGuid)" -ErrorAction SilentlyContinue
-    if ($AVProductVerify.Count -gt 0) {
+    $AVProductVerify = Get-ItemProperty -Path "HKLM:SOFTWARE\Microsoft\Security Center\Provider\Av\$($avproduct.instanceGuid)" -ErrorAction SilentlyContinue
+    if (!$AVProductVerify) {
         Write-Host "  Failure Reg Key: $($avproduct.instanceGuid) still exists. Reboot and run this script again. If this still exists, then proceed to the WBEMTEST manual procedure."
     }
     else {
