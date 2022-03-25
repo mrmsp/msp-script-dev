@@ -6,7 +6,6 @@
 ## Edit each customer to set a nickname. Use a single non-spaced abbreviation. This helps with filenames used with the VCSP agent
 ## Create each client in VCSP with the nickname. Then build an installer file Discovery / Discovered Computers / Download Agent.
 ## Upload those agents to your primary and backup servers and put those URLs in server1 and server2 below
-
 Import-Module $env:SyncroModule
 $vcsp_server = "vcsp.veeam.example.com"
 $server1 = "https://downloads.example.com/veeam/"
@@ -18,7 +17,8 @@ function main() {
         Write-Host "Error Please update the nickname custom field for customer: $customer_name"
         exit 1
     }
-    $agentfile="ManagementAgent.x64." + $customer_nickname + ".msi"
+    #$agentfile="ManagementAgent.x64." + $customer_nickname + ".msi"
+    $agentfile="ManagementAgent." + $customer_nickname + ".exe"
     Write-Host $agentfile
     
     ## Uninstall Veeam VCSP Agent if uninstall or reinstall is requested
@@ -62,6 +62,23 @@ function enable-all-sleep-wake-timers {
     }
 }
 
+
+## Function to remove invalid characters from company name to create clean filenames.
+##  Not currently used
+Function Remove-InvalidFileNameChars {
+  param(
+    [Parameter(Mandatory=$true,
+      Position=0,
+      ValueFromPipeline=$true,
+      ValueFromPipelineByPropertyName=$true)]
+    [String]$Name
+  )
+
+  $invalidChars = [IO.Path]::GetInvalidFileNameChars() -join ''
+  $re = "[{0}]" -f [RegEx]::Escape($invalidChars)
+  return ($Name -replace $re)
+}
+
 ## Standard download using powershell
 function download-vcsp() {
     $ProgressPreference = 'SilentlyContinue' # Hide irw progress bar to boost speed
@@ -74,8 +91,33 @@ function download-vcsp() {
 
 }
 
-## Install VCSP .msi file
+## Install VCSP .exe file
 function install-vcsp() {
+    Write-Host "Installing..."
+    $file = "$($env:temp)\$($agentfile)"
+    $DateStamp = get-date -Format yyyyMMddTHHmmss
+    $logFile = '{0}-{1}.log' -f $file,$DateStamp
+    $Arguments = @(
+        "/qn"
+        "/norestart"
+        "/L*v"
+        $logFile
+        "VAC_MANAGEMENT_AGENT_TYPE=2"
+        ('VAC_SERVER_NAME={0}' -f $vcsp_server)        
+        "ACCEPT_THIRDPARTY_LICENSES=1"
+        "ACCEPT_EULA=1"
+    )
+    
+    Write-Host $Arguments
+    Start-Process $file -ArgumentList $Arguments -Wait -NoNewWindow 
+}
+
+function uninstall-vcsp() {
+    Get-Package -Name "Veeam Service Provider Console Management Agent" | Uninstall-Package
+}
+
+## Install VCSP .msi file
+function install-vcsp-msi() {
     Write-Host "Installing..."
     $file = "$($env:temp)\$($agentfile)"
     $DateStamp = get-date -Format yyyyMMddTHHmmss
@@ -97,7 +139,7 @@ function install-vcsp() {
 }
 
 ## Uninstall VCSP from the .msi file
-function uninstall-vcsp() {
+function uninstall-vcsp-msi() {
     ## Alternate uninstall using Get-Software
     Write-Host "Uninstalling..."
     ## MSI Uninstall
