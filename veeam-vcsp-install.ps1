@@ -115,6 +115,10 @@ function install-vcsp() {
 function uninstall-vcsp() {
     #Get-Package -Name "Veeam Service Provider Console Management Agent" | Uninstall-Package
     Get-Package -Name "*Veeam*" | Uninstall-Package
+
+    ## https://www.veeam.com/kb2335
+    ## This registry value will reset all Veeam Agent for Microsoft Windows settings, removing existing job settings and related job history. 
+    ## Restore points created before the reset will not be removed and recoverable; however, they will not be tracked for retention.
     New-ItemProperty -Path "HKLM:\SOFTWARE\Veeam\Veeam Endpoint Backup" -Name "ReCreateDatabase" -Value 1
 }
 
