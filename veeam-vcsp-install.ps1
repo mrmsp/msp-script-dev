@@ -113,7 +113,8 @@ function install-vcsp() {
 }
 
 function uninstall-vcsp() {
-    Get-Package -Name "Veeam Service Provider Console Management Agent" | Uninstall-Package
+    #Get-Package -Name "Veeam Service Provider Console Management Agent" | Uninstall-Package
+    Get-Package -Name "*Veeam*" | Uninstall-Package
     New-ItemProperty -Path "HKLM:\SOFTWARE\Veeam\Veeam Endpoint Backup" -Name "ReCreateDatabase" -Value 1
 }
 
